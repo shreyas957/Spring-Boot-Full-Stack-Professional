@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "shreyas-full-stack-professional-api",
-      "image": "shreyas957/shreyas-full-stack-professional-api:15.11.2023.12.48.00",
+      "image": "shreyas957/shreyas-full-stack-professional-api:09.12.2023.07.00.49",
       "essential": true,
       "memory": 512,
       "portMappings": [
