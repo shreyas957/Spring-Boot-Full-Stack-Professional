@@ -14,7 +14,7 @@ services:
       - db
     restart: unless-stopped
 
-  shreyas-full-stack-api:
+  shreyas-full-stack-professional-api:
     container_name: shreyas-full-stack-professional-api-container
     image: shreyas957/shreyas-full-stack-professional-api
     environment:
@@ -28,6 +28,17 @@ services:
     restart:  unless-stopped
 #    command:
 #      - --spring.datasource.url=jdbc:postgresql://db:5432/customer
+  shreyas-full-stack-professional-react:
+    container_name: shreyas-full-stack-professional-react-container
+    image: shreyas957/shreyas-full-stack-professional-react
+    build:
+      context: frontend/react
+    ports:
+      - "3000:5173"
+    depends_on:
+      - shreyas-full-stack-professional-api
+    restart: unless-stopped
+
 networks:
   db:
     driver: bridge
