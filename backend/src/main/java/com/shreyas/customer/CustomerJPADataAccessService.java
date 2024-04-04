@@ -36,7 +36,7 @@ public class CustomerJPADataAccessService implements CustomerDAO {
 
     @Override
     public boolean existCustomerById(Long customerId) {
-         return customerRepository.existsCustomerById(customerId);
+        return customerRepository.existsCustomerById(customerId);
     }
 
     @Override
@@ -47,5 +47,10 @@ public class CustomerJPADataAccessService implements CustomerDAO {
     @Override
     public void updateCustomer(Customer customer) {
         customerRepository.save(customer);
+    }
+
+    @Override
+    public Optional<Customer> selectUserByEmail(String email) {
+        return customerRepository.findCustomerByEmail(email);
     }
 }

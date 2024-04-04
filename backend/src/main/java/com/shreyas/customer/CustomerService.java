@@ -4,24 +4,33 @@ import com.shreyas.exception.DuplicateResourceException;
 import com.shreyas.exception.RequestValidationException;
 import com.shreyas.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CustomerService {
     private final CustomerDAO customerDAO;
+    private final PasswordEncoder passwordEncoder;
+    private final CustomerDTOMapper customerDTOMapper;
 
-    public CustomerService(@Qualifier("jdbc")CustomerDAO customerDAO) {
+    public CustomerService(@Qualifier("jdbc") CustomerDAO customerDAO, PasswordEncoder passwordEncoder, CustomerDTOMapper customerDTOMapper) {
         this.customerDAO = customerDAO;
+        this.passwordEncoder = passwordEncoder;
+        this.customerDTOMapper = customerDTOMapper;
     }
 
-    public List<Customer> getAllCustomers() {
-        return customerDAO.selectAllCustomers();
+    public List<CustomerDTO> getAllCustomers() {
+        return customerDAO.selectAllCustomers().stream()
+                .map(customerDTOMapper)
+                .collect(Collectors.toList());
     }
 
-    public Customer getCustomer(Long customerId) {
+    public CustomerDTO getCustomer(Long customerId) {
         return customerDAO.selectCustomerById(customerId)
+                .map(customerDTOMapper)
                 .orElseThrow(
                         () -> new ResourceNotFoundException("Customer with id [%s] does not exist".formatted(customerId))
                 );
@@ -29,7 +38,7 @@ public class CustomerService {
 
     public void addCustomer(CustomerRegistrationRequest customerRegistrationRequest) {
 //        Check email exist
-        if(customerDAO.existCustomerByEmail(customerRegistrationRequest.email())) {
+        if (customerDAO.existCustomerByEmail(customerRegistrationRequest.email())) {
             throw new DuplicateResourceException(
                     "Customer with email already exist");
         }
@@ -37,6 +46,7 @@ public class CustomerService {
         Customer customer = new Customer(
                 customerRegistrationRequest.name(),
                 customerRegistrationRequest.email(),
+                passwordEncoder.encode(customerRegistrationRequest.password()),
                 customerRegistrationRequest.age(),
                 customerRegistrationRequest.gender());
         customerDAO.insertCustomer(customer);
@@ -50,7 +60,10 @@ public class CustomerService {
     }
 
     public void updateCustomerById(Long customerId, CustomerUpdateRequest updateRequest) {
-        Customer customer = getCustomer(customerId);
+        Customer customer = customerDAO.selectCustomerById(customerId)
+                .orElseThrow(
+                        () -> new ResourceNotFoundException("Customer with id [%s] does not exist".formatted(customerId))
+                );
         // TODO: Check that if updated data is not null or there in no change in value
         boolean change = false;
         if (updateRequest.name() != null && !customer.getName().equals(updateRequest.name())) {
@@ -69,7 +82,7 @@ public class CustomerService {
             change = true;
         }
 
-        if(!change) {
+        if (!change) {
             throw new RequestValidationException("No data change found");
         }
 

@@ -6,9 +6,11 @@ server:
 cors:
   allowed-origins: "*"
   allowed-methods: "*"
+  allowed-headers: "*"
+  exposed-headers: "*"
 
 spring:
-#  Configurations for datasource and connection pool
+  #  Configurations for datasource and connection pool
   datasource:
     url: jdbc:postgresql://localhost:5432/customer
     username: shreyas

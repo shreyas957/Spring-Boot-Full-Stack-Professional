@@ -21,7 +21,7 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
     @Override
     public List<Customer> selectAllCustomers() {
         var sql = """
-                SELECT id, name, email, age, gender
+                SELECT id, name, email, password, age, gender
                 FROM customer
                 """;
 
@@ -45,7 +45,7 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
     @Override
     public Optional<Customer> selectCustomerById(Long customerId) {
         var sql = """
-                SELECT id, name, email, age, gender
+                SELECT id, name, email, password, age, gender
                 FROM customer
                 WHERE id = ?
                 """;
@@ -71,14 +71,15 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
     public void insertCustomer(Customer customer) {
         // Values will be passed to ? from customer parameter
         var sql = """
-                INSERT INTO customer(name, email, age, gender)
-                VALUES(?,?,?,?)
+                INSERT INTO customer(name, email, password, age, gender)
+                VALUES(?,?,?,?,?)
                 """;
         int result = jdbcTemplate.update(
                 sql,
                 // Below parameter values will be passed to sql wildcard above
                 customer.getName(),
                 customer.getEmail(),
+                customer.getPassword(),
                 customer.getAge(),
                 customer.getGender().name()
         );
@@ -126,5 +127,17 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
             int result = jdbcTemplate.update(sql, customer.getAge(), customer.getId());
             System.out.println("update customer age result = " + result);
         }
+    }
+
+    @Override
+    public Optional<Customer> selectUserByEmail(String email) {
+        var sql = """
+                SELECT id, name, email, password, age, gender
+                FROM customer
+                WHERE email = ?
+                """;
+        return jdbcTemplate.query(sql, customerRowMapper, email)
+                .stream().
+                findFirst();
     }
 }

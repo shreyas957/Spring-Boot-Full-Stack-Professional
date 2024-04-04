@@ -2,16 +2,19 @@ package com.shreyas.customer;
 
 import com.github.javafaker.Faker;
 import com.shreyas.AbstractTestcontainers;
+import com.shreyas.TestConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
+@DataJpaTest()
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import({TestConfig.class})
 class CustomerRepositoryTest extends AbstractTestcontainers {
 
     @Autowired
@@ -30,7 +33,7 @@ class CustomerRepositoryTest extends AbstractTestcontainers {
         Customer customer = new Customer(
                 faker.name().fullName(),
                 email,
-                20,
+                "password", 20,
                 Gender.MALE);
         underTest.save(customer);
         // When
@@ -61,7 +64,7 @@ class CustomerRepositoryTest extends AbstractTestcontainers {
         Customer customer = new Customer(
                 faker.name().fullName(),
                 email,
-                20,
+                "password", 20,
                 Gender.MALE);
         underTest.save(customer);
         Long id = underTest.findAll()
@@ -77,6 +80,7 @@ class CustomerRepositoryTest extends AbstractTestcontainers {
         // Then
         assertThat(actual).isTrue();
     }
+
     @Test
     void existsCustomerByIdFailWhenIdIsNotPresent() {
         // Given

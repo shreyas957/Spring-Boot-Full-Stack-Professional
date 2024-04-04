@@ -68,7 +68,7 @@ class CustomerJPADataAccessServiceTest {
         Customer customer = new Customer(
                 faker.name().fullName(),
                 faker.internet().safeEmailAddress(),
-                25,
+                "password", 25,
                 Gender.MALE);
 
         // When
@@ -109,7 +109,7 @@ class CustomerJPADataAccessServiceTest {
         Customer customer = new Customer(
                 faker.name().fullName(),
                 faker.internet().safeEmailAddress(),
-                67,
+                "password", 67,
                 Gender.MALE);
 
         // When

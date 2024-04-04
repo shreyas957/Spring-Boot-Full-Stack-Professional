@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "shreyas-full-stack-professional-react",
-      "image": "shreyas957/shreyas-full-stack-professional-react:05.02.2024.15.22.07",
+      "image": "shreyas957/shreyas-full-stack-professional-react:latest",
       "essential": true,
       "memory": 256,
       "portMappings": [
@@ -27,7 +27,7 @@
       "environment": [
         {
           "name": "SPRING_DATASOURCE_URL",
-          "value": "jdbc:postgresql://awseb-e-dxdgfs2cwm-stack-awsebrdsdatabase-ui4am3yu9x47.cm3o7uhddx0b.ap-south-1.rds.amazonaws.com:5432/customer"
+          "value": "jdbc:postgresql://awseb-e-tqi7h2rkge-stack-awsebrdsdatabase-zcwrzd0atoer.cm3o7uhddx0b.ap-south-1.rds.amazonaws.com:5432/customer"
         }
       ]
     }

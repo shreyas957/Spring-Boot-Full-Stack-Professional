@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -21,14 +22,17 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)     // Using this annotation I don't need to initialize and close the mock manually
 class CustomerServiceTest {
-
     private CustomerService underTest;
+    @Mock
+    private CustomerDAO customerDAO;
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
-    @Mock private CustomerDAO customerDAO;
+    private final CustomerDTOMapper customerDTOMapper = new CustomerDTOMapper();
 
     @BeforeEach
     void setUp() {
-        underTest = new CustomerService(customerDAO);
+        underTest = new CustomerService(customerDAO, passwordEncoder, customerDTOMapper);
     }
 
     @Test
@@ -46,17 +50,16 @@ class CustomerServiceTest {
     void getCustomer() {
         // Given
         long id = 10;
-        Customer customer = new Customer(
-                id, "Alex", "alex@amezon.com", 23,
-                Gender.MALE);
-        // Below we are telling method what to do when invoked-->
+        Customer customer = new Customer(id, "Alex", "alex@gmail.com", "password", 19, Gender.MALE);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
+        CustomerDTO expected = customerDTOMapper.apply(customer);
+
         // When
-        Customer actual = underTest.getCustomer(id);
+        CustomerDTO actual = underTest.getCustomer(id);
 
         // Then
-        assertThat(actual).isEqualTo(customer);
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -81,8 +84,12 @@ class CustomerServiceTest {
         when(customerDAO.existCustomerByEmail(email)).thenReturn(false);
 
         CustomerRegistrationRequest customerRegistrationRequest = new CustomerRegistrationRequest(
-                "Alex", email, 19, Gender.MALE
+                "Alex", email, "password", 19, Gender.MALE
         );
+
+        String hashPassword = passwordEncoder.encode(customerRegistrationRequest.password());
+
+        when(passwordEncoder.encode(customerRegistrationRequest.password())).thenReturn(hashPassword);
 
         // When
         underTest.addCustomer(customerRegistrationRequest);
@@ -98,7 +105,9 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getId()).isNull();
         assertThat(capturedCustomer.getName()).isEqualTo(customerRegistrationRequest.name());
         assertThat(capturedCustomer.getEmail()).isEqualTo(customerRegistrationRequest.email());
+        assertThat(capturedCustomer.getPassword()).isEqualTo(hashPassword);
         assertThat(capturedCustomer.getAge()).isEqualTo(customerRegistrationRequest.age());
+        assertThat(capturedCustomer.getGender()).isEqualTo(customerRegistrationRequest.gender());
 
     }
 
@@ -110,7 +119,7 @@ class CustomerServiceTest {
         when(customerDAO.existCustomerByEmail(email)).thenReturn(true);
 
         CustomerRegistrationRequest customerRegistrationRequest = new CustomerRegistrationRequest(
-                "Alex", email, 19, Gender.MALE
+                "Alex", email, "password", 19, Gender.MALE
         );
 
         // When
@@ -155,8 +164,8 @@ class CustomerServiceTest {
     void WillUpdateAllCustomerPropertiesById() {
         // Given
         long id = 10;
-        Customer customer= new Customer(
-                "Alex", "alex@gmail.com", 29,
+        Customer customer = new Customer(
+                "Alex", "alex@gmail.com", "password", 29,
                 Gender.MALE);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
@@ -186,8 +195,8 @@ class CustomerServiceTest {
     void WillUpdateCustomerNamePropertyById() {
         // Given
         long id = 10;
-        Customer customer= new Customer(
-                "Alex", "alex@gmail.com", 29,
+        Customer customer = new Customer(
+                "Alex", "alex@gmail.com", "password", 29,
                 Gender.MALE);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
@@ -214,8 +223,8 @@ class CustomerServiceTest {
     void WillUpdateCustomerEmailPropertyById() {
         // Given
         long id = 10;
-        Customer customer= new Customer(
-                "Alex", "alex@gmail.com", 29,
+        Customer customer = new Customer(
+                "Alex", "alex@gmail.com", "password", 29,
                 Gender.MALE);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
@@ -243,8 +252,8 @@ class CustomerServiceTest {
     void WillUpdateCustomerAgePropertyById() {
         // Given
         long id = 10;
-        Customer customer= new Customer(
-                "Alex", "alex@gmail.com", 29,
+        Customer customer = new Customer(
+                "Alex", "alex@gmail.com", "password", 29,
                 Gender.MALE);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
@@ -272,8 +281,8 @@ class CustomerServiceTest {
         // Given
         long id = 10;
         String email = "alex@gmail.com";
-        Customer customer= new Customer(
-                "Alex", email, 29,
+        Customer customer = new Customer(
+                "Alex", email, "password", 29,
                 Gender.MALE);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
@@ -296,8 +305,8 @@ class CustomerServiceTest {
     void WillThrowExceptionWhenNoChangesWhileUpdateCustomer() {
         // Given
         long id = 10;
-        Customer customer= new Customer(
-                "Alex", "alex@gmail.com", 29,
+        Customer customer = new Customer(
+                "Alex", "alex@gmail.com", "password", 29,
                 Gender.MALE);
         when(customerDAO.selectCustomerById(id)).thenReturn(Optional.of(customer));
 
