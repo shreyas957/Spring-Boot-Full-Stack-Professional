@@ -78,11 +78,3 @@ export const useAuth = () => {
 }
 
 export default AuthProvider;
-
-
-// Provider Pattern
-// The Provider pattern in React is a way to manage state and provide
-// data to components that need it without having to pass down props through
-// multiple levels of components. It involves creating a "provider" component
-// that wraps around the entire application and provides a context that can be
-// accessed by any component within that provider's scope.
