@@ -11,7 +11,10 @@ import './index.css'
 
 const {ToastContainer} = createStandaloneToast()
 
-{/*These are the routes that the browser router will use to navigate between pages */
+{/*
+    These are the routes that the browser router will use to navigate between pages
+    protected routes are wrapped in the ProtectedRoutes component to ensure that the user is authenticated
+*/
 }
 const browserRouter = createBrowserRouter([
     {
