@@ -52,6 +52,7 @@ export const updateCustomer = async (id, update) => {
     }
 }
 
+// This will send request to log in customer
 export const login = async (usernameAndPassword) => {
     try {
         return await axios.post(
