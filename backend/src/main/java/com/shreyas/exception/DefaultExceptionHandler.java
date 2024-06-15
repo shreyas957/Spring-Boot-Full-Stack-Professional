@@ -10,6 +10,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
 
+/*
+
+The flow involves:
+Throwing an exception.
+Delegating to HandlerExceptionResolver.
+Resolving the exception using @ControllerAdvice and @ExceptionHandler.
+Returning an appropriate response to the client
+
+*/
+
 @ControllerAdvice
 public class DefaultExceptionHandler {
 
