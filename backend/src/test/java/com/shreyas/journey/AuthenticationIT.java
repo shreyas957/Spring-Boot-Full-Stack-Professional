@@ -2,8 +2,8 @@ package com.shreyas.journey;
 
 import com.github.javafaker.Faker;
 import com.github.javafaker.Name;
-import com.shreyas.auth.AuthenticationRequest;
-import com.shreyas.auth.AuthenticationResponse;
+import com.shreyas.auth.login.AuthenticationRequest;
+import com.shreyas.auth.login.AuthenticationResponse;
 import com.shreyas.customer.CustomerDTO;
 import com.shreyas.customer.CustomerRegistrationRequest;
 import com.shreyas.customer.Gender;

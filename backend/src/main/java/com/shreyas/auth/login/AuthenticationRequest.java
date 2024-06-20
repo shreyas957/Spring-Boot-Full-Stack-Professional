@@ -1,4 +1,4 @@
-package com.shreyas.auth;
+package com.shreyas.auth.login;
 
 public record AuthenticationRequest(
         String username,
