@@ -3,7 +3,7 @@
   "containerDefinitions": [
     {
       "name": "shreyas-full-stack-professional-react",
-      "image": "shreyas957/shreyas-full-stack-professional-react:15.06.2024.16.34.37",
+      "image": "shreyas957/shreyas-full-stack-professional-react:20.06.2024.14.17.16",
       "essential": true,
       "memory": 256,
       "portMappings": [
