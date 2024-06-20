@@ -15,7 +15,7 @@
     },
     {
       "name": "shreyas-full-stack-professional-api",
-      "image": "shreyas957/shreyas-full-stack-professional-api:20.06.2024.13.42.03",
+      "image": "shreyas957/shreyas-full-stack-professional-api:20.06.2024.14.14.09",
       "essential": true,
       "memory": 512,
       "portMappings": [
