@@ -26,3 +26,6 @@ spring:
 
   main:
     web-application-type: servlet
+logging:
+  level:
+    org.springframework.security: TRACE

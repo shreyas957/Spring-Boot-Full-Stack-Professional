@@ -7,13 +7,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * This is a Rest Controller for handling signup requests.
  * It is mapped to the "api/v1/auth/signup" URL.
  */
-@RestController("api/v1/auth/signup")
+@RestController
+@RequestMapping("api/v1/auth/signup")
 public class SignupController {
     private final CustomerService customerService;
     private final JWTUtil jwtUtil;
