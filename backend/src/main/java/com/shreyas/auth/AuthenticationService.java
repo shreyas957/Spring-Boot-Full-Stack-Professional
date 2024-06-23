@@ -1,4 +1,4 @@
-package com.shreyas.auth.login;
+package com.shreyas.auth;
 
 import com.shreyas.customer.Customer;
 import com.shreyas.customer.CustomerDTO;

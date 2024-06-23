@@ -63,14 +63,3 @@ export const login = async (usernameAndPassword) => {
         throw err;
     }
 }
-
-export const signup = async (customer) => {
-    try {
-        return await axios.post(
-            `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/signup`,
-            customer
-        )
-    } catch (err) {
-        throw err;
-    }
-}

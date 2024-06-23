@@ -1,4 +1,4 @@
-package com.shreyas.auth.login;
+package com.shreyas.auth;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;

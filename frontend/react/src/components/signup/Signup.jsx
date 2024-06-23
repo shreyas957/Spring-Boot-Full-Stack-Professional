@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import React, {useEffect} from "react";
 import {Flex, Heading, Image, Link, Stack} from "@chakra-ui/react";
 import loginImage from "../../assets/loginImg.png";
-import SignupCustomerForm from "./SignupCustomerForm.jsx";
+import CreateCustomerForm from "../shared/CreateCustomerForm.jsx";
 
 const Signup = () => {
     const {customer, setCustomerFromToken} = useAuth();
@@ -20,7 +20,7 @@ const Signup = () => {
             <Flex p={8} flex={1} alignItems={'center'} justifyContent={'center'}>
                 <Stack spacing={4} w={'full'} maxW={'md'}>
                     <Heading fontSize={'2xl'} mb={15}>Register your account</Heading>
-                    <SignupCustomerForm onSuccess={(token) => {
+                    <CreateCustomerForm onSuccess={(token) => {
                         /**
                          * On successful form submission, store the JWT token in local storage,
                          * set the customer from the token, and navigate to the dashboard.
