@@ -44,6 +44,8 @@ public class SecurityFilterChainConfig {
                                         .permitAll()
                                         .requestMatchers(HttpMethod.GET, "/ping")
                                         .permitAll()
+                                        .requestMatchers(HttpMethod.GET, "/actuator/**")
+                                        .permitAll()
                                         .anyRequest()
                                         .authenticated()        // The user should be authenticated for any request in the application.
                 )
