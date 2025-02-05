@@ -23,6 +23,7 @@ public class CustomerJDBCDataAccessService implements CustomerDAO {
         var sql = """
                 SELECT id, name, email, password, age, gender
                 FROM customer
+                LIMIT 10
                 """;
 
         // RowMapper is a Lambda which returns the customer by grabbing the column contents for each row

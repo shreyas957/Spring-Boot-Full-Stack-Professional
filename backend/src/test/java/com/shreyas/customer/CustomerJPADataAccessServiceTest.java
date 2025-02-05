@@ -4,9 +4,17 @@ import com.github.javafaker.Faker;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 class CustomerJPADataAccessServiceTest {
 
@@ -31,10 +39,18 @@ class CustomerJPADataAccessServiceTest {
     @Test
     void selectAllCustomers() {
         // When --> we call method underTest.selectAllCustomers, we want to make sure that customerRepository.findAll() --> gets invoked
-        underTest.selectAllCustomers();
+        Page<Customer> page = mock(Page.class);
+        List<Customer> customers = List.of(new Customer());
+        when(page.getContent()).thenReturn(customers);
+        when(customerRepository.findAll(any(Pageable.class))).thenReturn(page);
+        // When
+        List<Customer> expected = underTest.selectAllCustomers();
 
         // Then
-        Mockito.verify(customerRepository).findAll();
+        assertThat(expected).isEqualTo(customers);
+        ArgumentCaptor<Pageable> pageArgumentCaptor = ArgumentCaptor.forClass(Pageable.class);
+        verify(customerRepository).findAll(pageArgumentCaptor.capture());
+        assertThat(pageArgumentCaptor.getValue()).isEqualTo(Pageable.ofSize(10));
     }
 
     @Test
@@ -46,7 +62,7 @@ class CustomerJPADataAccessServiceTest {
         underTest.selectCustomerById(id);
 
         // Then
-        Mockito.verify(customerRepository).findById(id);
+        verify(customerRepository).findById(id);
     }
 
     @Test
@@ -58,7 +74,7 @@ class CustomerJPADataAccessServiceTest {
         underTest.existCustomerByEmail(email);
 
         // Then
-        Mockito.verify(customerRepository).existsCustomerByEmail(email);
+        verify(customerRepository).existsCustomerByEmail(email);
     }
 
     @Test
@@ -75,7 +91,7 @@ class CustomerJPADataAccessServiceTest {
         underTest.insertCustomer(customer);
 
         // Then
-        Mockito.verify(customerRepository).save(customer);
+        verify(customerRepository).save(customer);
     }
 
     @Test
@@ -87,7 +103,7 @@ class CustomerJPADataAccessServiceTest {
         underTest.existCustomerById(id);
 
         // Then
-        Mockito.verify(customerRepository).existsCustomerById(id);
+        verify(customerRepository).existsCustomerById(id);
     }
 
     @Test
@@ -99,7 +115,7 @@ class CustomerJPADataAccessServiceTest {
         underTest.removeCustomerById(id);
 
         // Then
-        Mockito.verify(customerRepository).deleteById(id);
+        verify(customerRepository).deleteById(id);
     }
 
     @Test
@@ -116,6 +132,6 @@ class CustomerJPADataAccessServiceTest {
         underTest.updateCustomer(customer);
 
         // Then
-        Mockito.verify(customerRepository).save(customer);
+        verify(customerRepository).save(customer);
     }
 }
