@@ -141,6 +141,12 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>2.27.21</version>
+        </dependency>
+
     </dependencies>
 
     <build>

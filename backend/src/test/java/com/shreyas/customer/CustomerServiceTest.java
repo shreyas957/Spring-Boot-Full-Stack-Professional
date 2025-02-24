@@ -3,6 +3,8 @@ package com.shreyas.customer;
 import com.shreyas.exception.DuplicateResourceException;
 import com.shreyas.exception.RequestValidationException;
 import com.shreyas.exception.ResourceNotFoundException;
+import com.shreyas.s3.S3Buckets;
+import com.shreyas.s3.S3Service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,10 +31,14 @@ class CustomerServiceTest {
     private PasswordEncoder passwordEncoder;
 
     private final CustomerDTOMapper customerDTOMapper = new CustomerDTOMapper();
+    @Mock
+    private S3Service s3Service;
+    @Mock
+    private S3Buckets s3Buckets;
 
     @BeforeEach
     void setUp() {
-        underTest = new CustomerService(customerDAO, passwordEncoder, customerDTOMapper);
+        underTest = new CustomerService(customerDAO, passwordEncoder, customerDTOMapper, s3Service, s3Buckets);
     }
 
     @Test

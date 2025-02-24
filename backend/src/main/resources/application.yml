@@ -9,6 +9,12 @@ cors:
   allowed-headers: "*"
   exposed-headers: "*"
 
+aws:
+  region: "ap-south-1"
+  s3:
+    buckets:
+      customer: "my-bucket-name"
+
 spring:
   #  Configurations for datasource and connection pool
   datasource:
