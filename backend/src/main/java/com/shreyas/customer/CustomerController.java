@@ -64,7 +64,7 @@ public class CustomerController {
     public void uploadCustomerProfileImage(
             @PathVariable("customerId") Long customerId,
             @RequestParam("file") MultipartFile multipartFile) {
-        customerService.uploadCustomerProfileImage(customerId, file);
+        customerService.uploadCustomerProfileImage(customerId, multipartFile);
     }
 
     @GetMapping("{customerId}/profile-image")
